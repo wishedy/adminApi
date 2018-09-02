@@ -120,13 +120,21 @@ class Admin {
                     }else{
                         //密码不一致
                         sendData = responseData.createResponseData({
-                            message:'密码不正确',
+                            message:'账号或密码不正确',
                             data:'NO DATA',
                             code:1,//密码不正确
                             pk:0
                         });
                         res.send(sendData);
                     }
+                }else{
+                    sendData = responseData.createResponseData({
+                        message:'账号或密码不正确',
+                        data:'NO DATA',
+                        code:1,//密码不正确
+                        pk:0
+                    });
+                    res.send(sendData);
                 }
             });
         }
