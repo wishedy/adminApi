@@ -2,8 +2,8 @@
 const mongoose  = require('mongoose');
 const Schema = mongoose.Schema;
 const customerSchema = new Schema({
-    customer_id:Number,//前台线上用户唯一标识
-    customer_nickname:Number,//用户线上昵称
+    customer_id:String,//前台线上用户唯一标识
+    customer_nickname:String,//用户线上昵称
     customer_name:String,//用户姓名
     customer_sex:String,//用户性别，0女，1男
     customer_profession:String,//用户职业
