@@ -1,6 +1,7 @@
 'use strict';
 const mongoose  = require('mongoose');
 const Schema = mongoose.Schema;
+const mongoosePaginate = require('mongoose-paginate');
 const customerSchema = new Schema({
     customer_id:String,//前台线上用户唯一标识
     customer_nickname:String,//用户线上昵称
@@ -36,5 +37,6 @@ const customerSchema = new Schema({
     like_me_num:String,//赞了我的数量，未看
     message_me_num:String//我的留言数量，未看
 });
+customerSchema.plugin(mongoosePaginate);
 const Customer = mongoose.model('Customer',customerSchema);
 export default  Customer;
