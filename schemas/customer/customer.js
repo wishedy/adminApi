@@ -9,7 +9,7 @@ const customerSchema = new Schema({
     customer_sex:String,//用户性别，0女，1男
     customer_profession:String,//用户职业
     customer_education:String,//用户学历
-    customer_account_status:String,//用户账户状态，0注册，1认证，2更改认证，3拉黑
+    customer_account_status:String,//用户账户状态，0注册，1提交认证，等待审核，2,认证通过,3驳回认证,4拉黑
     customer_active_vaule: String,//用户活跃值
     customer_location:String,//用户所在地
     customer_email:String,//用户邮箱

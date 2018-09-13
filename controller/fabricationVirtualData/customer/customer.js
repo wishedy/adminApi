@@ -11,7 +11,7 @@ import CustomerModel from '../../../schemas/customer/customer.js';
                     'customer_id':'@datetime(T)',
                     'customer_family_id':'@datetime(T)',
                     'customer_profession':"@ctitle(8)",
-                    'customer_account_status|1':['0', '1','2','3'],
+                    'customer_account_status|1':['0', '1','2','3','5','6','4'],
                     'customer_sex|1':['0','1'],
                     'customer_education':'@ctitle(8)',
                     'customer_degree|1':['0','1','2','3'],
