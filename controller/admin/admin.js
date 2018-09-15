@@ -41,7 +41,7 @@ class Admin {
                             message:'该用户已经存在',
                             data:'NO DATA',
                             code:1,
-                            pk:userInfo.id
+                            pk:userInfo.admin_id
                         });
                         res.send(sendData);
                     }else{
@@ -56,7 +56,7 @@ class Admin {
                         var datestr = dtime().format('YYYY-MM-DD HH:mm:ss');
                         let encryptPassword = t.encryption(passWord);
                         const newAdmin = {
-                            id:timestamp,
+                            admin_id:timestamp,
                             admin_grade:grade,//管理员等级，0超级管理员，1普通管理员
                             admin_name:name,//管理员姓名
                             admin_email:email,//管理员邮箱
@@ -114,7 +114,7 @@ class Admin {
                                 adminGrade:userInfo.admin_grade
                             },
                             code:2,//登录成功
-                            pk:userInfo.id
+                            pk:userInfo.admin_id
                         });
                         res.send(sendData);
                     }else{

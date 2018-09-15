@@ -13,6 +13,7 @@ app.all('*', (req, res, next) => {
     res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
     res.header("Access-Control-Allow-Credentials", true); //可以带cookies
     res.header("X-Powered-By", 'express:4.15.2');
+    res.header("Cache-Control", 'no-store');
     if (req.method == 'OPTIONS') {
         res.sendStatus(200);
     } else {

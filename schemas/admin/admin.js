@@ -2,7 +2,7 @@
 const mongoose  = require('mongoose');
 const Schema = mongoose.Schema;
 const adminSchema = new Schema({
-    id:Number,
+    admin_id:Number,
     admin_grade:Number,//管理员等级，0超级管理员，1普通管理员
     admin_name:String,//管理员姓名
     admin_email:String,//管理员邮箱

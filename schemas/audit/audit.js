@@ -13,6 +13,7 @@ const auditSchema = new Schema({
     audit_admin:String,//审核该审核的管理员
     audit_result:String,//审核结果
     customer_id:String,//审核的用户
+    customer_name:String,//审核的姓名
     update_time: String//最新更新的时间
 });
 const Audit = mongoose.model('Audit',auditSchema);

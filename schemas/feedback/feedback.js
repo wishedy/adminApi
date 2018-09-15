@@ -10,6 +10,7 @@ const feedbackSchema = new Schema({
     create_time:String,//创建反馈的时间
     feedback_attachment_id_list:String,//该反馈的相关附件
     feedback_admin:String,//回复该反馈的管理员
+    feedback_admin_content:String,//管理员回复内容
     update_time:String//回复反馈的时间
 });
 const Feedback = mongoose.model('Feedback',feedbackSchema);

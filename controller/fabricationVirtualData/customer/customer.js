@@ -6,12 +6,12 @@ import CustomerModel from '../../../schemas/customer/customer.js';
      }
      async createCustomer(req,res,next){
         const data = Mock.mock({
-            'dataList|10':[
+            'dataList|30':[
                 {
                     'customer_id':'@datetime(T)',
                     'customer_family_id':'@datetime(T)',
                     'customer_profession':"@ctitle(8)",
-                    'customer_account_status|1':['0', '1','2','3','5','6','4'],
+                    'customer_account_status|1':['0', '1','2','3','4'],
                     'customer_sex|1':['0','1'],
                     'customer_education':'@ctitle(8)',
                     'customer_degree|1':['0','1','2','3'],
@@ -39,6 +39,7 @@ import CustomerModel from '../../../schemas/customer/customer.js';
                     'like_me_num|100-999':1,
                     'message_me_num|100-999':1,
                     'customer_name':"@cname",
+                    'admin_name':"@cname",
                     'customer_home': '@province' + '@city',
                     'customer_location': '@province' + '@city'
                 }
@@ -47,15 +48,15 @@ import CustomerModel from '../../../schemas/customer/customer.js';
          let sumNum = 0;
          let  saveCustomerData = ()=>{
             for(let i = 0;i<data.dataList.length;i++){
-                console.log(data.dataList[i]['customer_nickname']);
+               // console.log(data.dataList[i]['customer_nickname']);
                 const customer = CustomerModel.findOne({'customer_id':data.dataList[i]['customer_id']},function(error,userInfo){
                    //console.log('执行',error); 
                    if(error){
                         console.log('报错了');
                     }else{
-                        console.log(userInfo);
+                        //console.log(userInfo);
                         if(!userInfo){
-                            console.log('存储数据',data.dataList[i]);
+                            //console.log('存储数据',data.dataList[i]);
                            CustomerModel.create(data.dataList[i],function(error){
                                if(error){
                                    console.log('存储失败');

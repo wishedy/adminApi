@@ -2,6 +2,10 @@
 const express = require('express');
 import Customer from '../controller/customer/customer.js';
 const router = express.Router();
-router.get('/getCustomerList',Customer.getCustomerList);
+router.get('/getCustomerList',Customer.getJsonList);
+router.get('/getAuditList',Customer.getJsonList);
+router.get('/getFeedBackList',Customer.getJsonList);
+router.get('/getInformList',Customer.getJsonList);
 router.get('/changeCustomerState',Customer.changeCustomerState);
+router.get('/getBlacklist',Customer.changeCustomerState);
 export default router;

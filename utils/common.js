@@ -1,10 +1,46 @@
 class common {
     constructor(){
-
+        this.deleteEmptyProperty = this.deleteEmptyProperty.bind(this);
+        this.isEmptyObject = this.isEmptyObject.bind(this);
+        this.isEmpty = this.isEmpty.bind(this);
+        this.isNothing = this.isNothing.bind(this);
+        this.toHump = this.toHump.bind(this);
+        this.isNothing = this.isNothing.bind(this);
+        this.toHump = this.toHump.bind(this);
+        this.toLine = this.toLine.bind(this);
     }
     //空对象判断方法
     isEmptyObject(obj){
         for(let n in obj){return false}
+        return true;
+    }
+    deleteEmptyProperty(object){
+        let t = this;
+        for (var i in object) {
+            var value = object[i];
+            if (typeof value === 'object') {
+                if (Array.isArray(value)) {
+                    if (value.length == 0) {
+                        delete object[i];
+                        continue;
+                    }
+                }
+                t.deleteEmptyProperty(value);
+                if (t.isEmpty(value)) {
+                    delete object[i];
+                }
+            } else {
+                if (value === '' || value === null || value === undefined) {
+                    delete object[i];
+                } else {
+                }
+            }
+        }
+    }
+    isEmpty(object) {
+        for (var name in object) {
+            return false;
+        }
         return true;
     }
     isNothing(val){
