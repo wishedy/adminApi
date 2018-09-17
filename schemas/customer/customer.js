@@ -9,7 +9,7 @@ const customerSchema = new Schema({
     admin_name:String,//管理员姓名
     customer_sex:String,//用户性别，0女，1男
     customer_profession:String,//用户职业
-    customer_education:String,//用户学历
+    customer_school:String,//用户毕业院校
     customer_account_status:String,//用户账户状态，0注册，1提交认证，等待审核，2,认证通过,3驳回认证,4拉黑
     customer_active_vaule: String,//用户活跃值
     customer_location:String,//用户所在地
@@ -33,7 +33,7 @@ const customerSchema = new Schema({
     customer_family_id:String,//家庭情况，id
     attachment_id_list:String,//该用户拥有附件的id,list,id,id,id,
     update_time:String,//最新修改个人基本资料的时间
-    customer_degree:String,//用户学位
+    customer_degree:String,//用户学位0大学专科，1大学本科，2研究生，3博士，4博士后
     comment_me_num:String,//评论了我的数量，未看
     like_me_num:String,//赞了我的数量，未看
     message_me_num:String//我的留言数量，未看

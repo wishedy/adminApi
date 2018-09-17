@@ -1,6 +1,7 @@
 'use strict';
 const mongoose  = require('mongoose');
 const Schema = mongoose.Schema;
+const mongoosePaginate = require('mongoose-paginate');
 const auditSchema = new Schema({
     audit_id:Number,//该认证审核的唯一标识
     audit_type:Number,//认证审核类型，0新建审核，1更改审核信息
@@ -16,5 +17,6 @@ const auditSchema = new Schema({
     customer_name:String,//审核的姓名
     update_time: String//最新更新的时间
 });
+auditSchema.plugin(mongoosePaginate);
 const Audit = mongoose.model('Audit',auditSchema);
 export default  Audit;

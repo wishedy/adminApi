@@ -1,6 +1,7 @@
 'use strict';
 const mongoose  = require('mongoose');
 const Schema = mongoose.Schema;
+const mongoosePaginate = require('mongoose-paginate');
 const blackSchema = new Schema({
     black_id:Number,//该拉黑的唯一标识
     customer_id:Number,//拉黑用户的id
@@ -14,5 +15,6 @@ const blackSchema = new Schema({
     admin_name:String,//拉黑该用户的名字
     update_time:String//无效拉黑的时间
 });
+blackSchema.plugin(mongoosePaginate);
 const black = mongoose.model('black',blackSchema);
 export default  black;

@@ -1,5 +1,6 @@
 'use strict';
 const mongoose  = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate');
 const Schema = mongoose.Schema;
 const resourceSchema = new Schema({
     resource_id:Number,//该资源的唯一标识
@@ -17,5 +18,6 @@ const resourceSchema = new Schema({
     is_valid:String,//0无效，1有效
     update_time:String//评论操作资源的最新时间
 });
+resourceSchema.plugin(mongoosePaginate);
 const Resource = mongoose.model('Resource',resourceSchema);
 export default  Resource;

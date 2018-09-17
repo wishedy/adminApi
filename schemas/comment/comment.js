@@ -1,6 +1,7 @@
 'use strict';
 const mongoose  = require('mongoose');
 const Schema = mongoose.Schema;
+const mongoosePaginate = require('mongoose-paginate');
 const commentSchema = new Schema({
     comment_id:Number,//该评论的唯一标识
     comment_content:String,//评论的文字内容
@@ -10,5 +11,6 @@ const commentSchema = new Schema({
     comment_customer_id:String,//评论的对象用户id
     update_time:String//回复评论的最新时间
 });
+commentSchema.plugin(mongoosePaginate);
 const Comment = mongoose.model('Comment',commentSchema);
 export default  Comment;

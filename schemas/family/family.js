@@ -1,6 +1,7 @@
 'use strict';
 const mongoose  = require('mongoose');
 const Schema = mongoose.Schema;
+const mongoosePaginate = require('mongoose-paginate');
 const familySchema = new Schema({
     family_id:Number,//家庭唯一标识
     parents_circumstance:Number,//父母情况
@@ -9,5 +10,6 @@ const familySchema = new Schema({
     create_time:String,//创建时间
     upload_time:String//更新时间
 });
+familySchema.plugin(mongoosePaginate);
 const Family = mongoose.model('Family',familySchema);
 export default  Family;

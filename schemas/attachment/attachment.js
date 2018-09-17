@@ -1,5 +1,6 @@
 'use strict';
 const mongoose  = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate');
 const Schema = mongoose.Schema;
 const attachmentSchema = new Schema({
     attachment_id:Number,//该附件的唯一标识
@@ -11,5 +12,6 @@ const attachmentSchema = new Schema({
     attachment_number:String,//附件相关的号码
     attachment_remark: String//附件备注信息
 });
+attachmentSchema.plugin(mongoosePaginate);
 const Attachment = mongoose.model('Attachment',attachmentSchema);
 export default  Attachment;

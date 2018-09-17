@@ -1,6 +1,7 @@
 'use strict';
 const mongoose  = require('mongoose');
 const Schema = mongoose.Schema;
+const mongoosePaginate = require('mongoose-paginate');
 const informSchema = new Schema({
     inform_id:Number,//该举报的唯一标识
     customer_id:Number,//举报用户的id
@@ -15,5 +16,6 @@ const informSchema = new Schema({
     inform_admin_content:String,//管理员回复该举报的内容
     update_time:String//回复举报的时间
 });
+informSchema.plugin(mongoosePaginate);
 const Inform = mongoose.model('Inform',informSchema);
 export default  Inform;

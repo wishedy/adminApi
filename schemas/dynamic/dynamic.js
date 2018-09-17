@@ -1,6 +1,7 @@
 'use strict';
 const mongoose  = require('mongoose');
 const Schema = mongoose.Schema;
+const mongoosePaginate = require('mongoose-paginate');
 const dynamicSchema = new Schema({
     dynamic_id:Number,//该动态的唯一标识
     dynamic_content:String,//动态的文字内容
@@ -13,5 +14,6 @@ const dynamicSchema = new Schema({
     browse_num:String,//该动态的浏览量    
     update_time:String//回复动态的最新时间
 });
+dynamicSchema.plugin(mongoosePaginate);
 const Dynamic = mongoose.model('Dynamic',dynamicSchema);
 export default  Dynamic;
