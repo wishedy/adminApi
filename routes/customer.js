@@ -7,5 +7,5 @@ router.get('/getAuditList',Customer.getJsonList);
 router.get('/getFeedBackList',Customer.getJsonList);
 router.get('/getInformList',Customer.getJsonList);
 router.get('/changeCustomerState',Customer.changeCustomerState);
-router.get('/getBlacklist',Customer.changeCustomerState);
+router.get('/getBlacklist',Customer.getJsonList);
 export default router;

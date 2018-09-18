@@ -2,7 +2,9 @@
 const express = require('express');
 import Customer from '../controller/fabricationVirtualData/customer/customer.js';
 import Feedback from '../controller/fabricationVirtualData/feedback/feedback.js';
+import Blacklist from '../controller/fabricationVirtualData/blacklist/blacklist.js';
 const router = express.Router();
 router.get('/customer',Customer.createCustomer);
 router.get('/feedBack',Feedback.createFeedback);
+router.get('/blacklist',Blacklist.createBlackCustomer);
 export default router;
