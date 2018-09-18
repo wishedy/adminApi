@@ -9,7 +9,7 @@ const blackSchema = new Schema({
     black_reason:String,//拉黑的原因
     relate_customer_id:String,//举报该用户致使拉黑的用户id
     relate_customer_name:String,//举报该用户致使拉黑的用户名字
-    black_state:String,//拉黑的状态，0新建，1已回复
+    black_state:String,//拉黑的状态，0新建，1激活
     create_time:String,//创建拉黑的时间
     admin_id:String,//拉黑该用户的id
     admin_name:String,//拉黑该用户的名字

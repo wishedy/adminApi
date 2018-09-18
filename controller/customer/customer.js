@@ -5,6 +5,7 @@ import AuditModel from '../../schemas/audit/audit.js';
 import FeedbackModel from '../../schemas/feedback/feedback.js';
 import InformModel from '../../schemas/inform/inform.js';
 import BlacklistModel from '../../schemas/blacklist/blacklist.js';
+const dtime = require('time-formater');
 class Customer{
     constructor(){
         this.getJsonList = this.getJsonList.bind(this);
@@ -114,7 +115,8 @@ class Customer{
                 }else{
                     if(data){
                         let updateState = paramJson.updateState;
-                        CustomerModel.update({customer_account_status: updateState}, {multi: false}, function(error, docs){
+                        let dateStr = dtime().format('YYYY-MM-DD HH:mm:ss');
+                        CustomerModel.update({'customer_id':customerId},{customer_account_status: updateState,'update_time':dateStr}, {multi: false}, function(error, docs){
                             if(error){
                                 sendData = responseData.createResponseData({
                                     message:'更新状态失败',
@@ -126,25 +128,54 @@ class Customer{
                             }else{
                                 if(docs){
                                     let returnDes = '';
+                                    let sendResponseData =(resData,des)=>{
+                                        sendData = responseData.createResponseData({
+                                            message:des,
+                                            data:resData,
+                                            code:4,
+                                            responsePk:customerId
+                                        });
+                                        res.send(sendData);
+                                    };
                                     //0注册，3拉黑，但凡被拉黑的用户都要重新回归到注册状态重新认证
                                     switch (parseInt(updateState,10)){
                                         case 0:
                                             returnDes = '用户已激活';
+                                            BlacklistModel.update({'customer_id':customerId},{'black_state':1,'update_time':dateStr},{multi: false},function(err,data){
+                                                if(err){
+                                                    sendResponseData('NO DATA','激活失败');
+                                                }else{
+                                                    if(data){
+                                                        sendResponseData(JSON.parse(JSON.stringify(data)),'激活失败');
+                                                    }else{
+                                                        sendResponseData('NO DATA','激活失败');
+                                                    }
+                                                }
+
+                                            });
                                             break;
                                         case 3:
                                             returnDes = '认证已驳回';
                                             break;
                                         case 4:
+                                            let timestamp = (new Date()).getTime();
+                                            let reason = paramJson.blackReason;
+                                            let blackJson = {
+                                                black_id:timestamp,//该拉黑的唯一标识
+                                                customer_id:customerId,//拉黑用户的id
+                                                customer_name:docs.customer_name,//拉黑用户的名字
+                                                black_reason:reason,//拉黑的原因
+                                                relate_customer_id:String,//举报该用户致使拉黑的用户id
+                                                relate_customer_name:String,//举报该用户致使拉黑的用户名字
+                                                black_state:String,//拉黑的状态，0新建，1激活
+                                                create_time:String,//创建拉黑的时间
+                                                admin_id:String,//拉黑该用户的id
+                                                admin_name:String,//拉黑该用户的名字
+                                                update_time:String//无效拉黑的时间
+                                            };
                                             returnDes = '用户已拉黑';
                                             break;
                                     }
-                                    sendData = responseData.createResponseData({
-                                        message:returnDes,
-                                        data:JSON.parse(common.toHump(JSON.stringify(docs))),
-                                        code:4,
-                                        responsePk:customerId
-                                    });
-                                    res.send(sendData);
                                 }else{
                                     sendData = responseData.createResponseData({
                                         message:'更新状态失败',
