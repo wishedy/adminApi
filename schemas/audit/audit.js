@@ -11,8 +11,9 @@ const auditSchema = new Schema({
     degree_attachment:String,//学位相关附件
     other_attachment:String,//其他相关附件
     create_time:String,//该审核创建的时间
-    audit_admin:String,//审核该审核的管理员
-    audit_result:String,//审核结果
+    admin_name:String,//审核该审核的管理员
+    admin_id:String,//审核该审核的管理员
+    audit_result:String,//审核结果0驳回，1通过
     customer_id:String,//审核的用户
     customer_name:String,//审核的姓名
     update_time: String//最新更新的时间
