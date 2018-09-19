@@ -103,6 +103,8 @@ class Customer{
             res.send(sendData);
         }else{
             let customerId = paramJson.customerId;
+            let adminId = paramJson.adminId;
+            let adminName = paramJson.adminName;
             CustomerModel.findOne({'customer_id':customerId},function(error,data){
                 if(error){
                     sendData = responseData.createResponseData({
@@ -141,12 +143,13 @@ class Customer{
                                     switch (parseInt(updateState,10)){
                                         case 0:
                                             returnDes = '用户已激活';
-                                            BlacklistModel.update({'customer_id':customerId},{'black_state':1,'update_time':dateStr},{multi: false},function(err,data){
+                                            let blackId = paramJson.blackId;
+                                            BlacklistModel.update({'black_id':blackId},{'unlock_admin_id':adminId,'unlock_admin_name':adminName,'black_state':1,'update_time':dateStr},{multi: false},function(err,data){
                                                 if(err){
                                                     sendResponseData('NO DATA','激活失败');
                                                 }else{
                                                     if(data){
-                                                        sendResponseData(JSON.parse(JSON.stringify(data)),'激活失败');
+                                                        sendResponseData(JSON.parse(JSON.stringify(data)),returnDes);
                                                     }else{
                                                         sendResponseData('NO DATA','激活失败');
                                                     }
@@ -160,20 +163,33 @@ class Customer{
                                         case 4:
                                             let timestamp = (new Date()).getTime();
                                             let reason = paramJson.blackReason;
+                                            let relateCustomerId = paramJson.reportCustomerId;
+                                            let relateCustomerName = paramJson.reportCustomerName;
                                             let blackJson = {
                                                 black_id:timestamp,//该拉黑的唯一标识
                                                 customer_id:customerId,//拉黑用户的id
                                                 customer_name:docs.customer_name,//拉黑用户的名字
                                                 black_reason:reason,//拉黑的原因
-                                                relate_customer_id:String,//举报该用户致使拉黑的用户id
-                                                relate_customer_name:String,//举报该用户致使拉黑的用户名字
-                                                black_state:String,//拉黑的状态，0新建，1激活
-                                                create_time:String,//创建拉黑的时间
-                                                admin_id:String,//拉黑该用户的id
-                                                admin_name:String,//拉黑该用户的名字
-                                                update_time:String//无效拉黑的时间
+                                                relate_customer_id:relateCustomerId,//举报该用户致使拉黑的用户id
+                                                relate_customer_name:relateCustomerName,//举报该用户致使拉黑的用户名字
+                                                black_state:0,//拉黑的状态，0新建，1激活
+                                                create_time:dateStr,//创建拉黑的时间
+                                                admin_id:adminId,//拉黑该用户的id
+                                                admin_name:adminName,//拉黑该用户的名字
+                                                update_time:dateStr//无效拉黑的时间
                                             };
                                             returnDes = '用户已拉黑';
+                                            BlacklistModel.create(blackJson,function(err,info){
+                                                if(error){
+                                                    sendResponseData('NO DATA','拉黑失败');
+                                                }else{
+                                                    if(info){
+                                                        sendResponseData(JSON.parse(JSON.stringify(info)),returnDes);
+                                                    }else{
+                                                        sendResponseData('NO DATA','拉黑失败');
+                                                    }
+                                                }
+                                            });
                                             break;
                                     }
                                 }else{
@@ -186,7 +202,6 @@ class Customer{
                                     res.send(sendData);
                                 }
                             }
-                            console.log('更改成功：' + docs);
                         })
                     }else{
                         sendData = responseData.createResponseData({
