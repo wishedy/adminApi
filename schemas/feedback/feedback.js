@@ -3,8 +3,8 @@ const mongoose  = require('mongoose');
 const Schema = mongoose.Schema;
 const mongoosePaginate = require('mongoose-paginate');
 const feedbackSchema = new Schema({
-    feedback_id:Number,//该反馈的唯一标识
-    customer_id:Number,//反馈用户的id
+    feedback_id:String,//该反馈的唯一标识
+    customer_id:String,//反馈用户的id
     customer_name:String,//反馈用户的名字
     admin_name:String,//反馈用户的名字
     admin_id:String,//反馈用户的名字

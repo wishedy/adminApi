@@ -3,7 +3,7 @@ const mongoose  = require('mongoose');
 const Schema = mongoose.Schema;
 const mongoosePaginate = require('mongoose-paginate');
 const dynamicSchema = new Schema({
-    dynamic_id:Number,//该动态的唯一标识
+    dynamic_id:String,//该动态的唯一标识
     dynamic_content:String,//动态的文字内容
     create_time:String,//创建动态的时间
     customer_id:String,//该动态的作者id,

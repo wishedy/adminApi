@@ -1,6 +1,6 @@
 class responseData{
  constructor(){
-
+   this.createResponseData = this.createResponseData.bind(this);
  }
  createResponseData(options){
      let result = {};

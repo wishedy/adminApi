@@ -3,8 +3,8 @@ const mongoose  = require('mongoose');
 const Schema = mongoose.Schema;
 const mongoosePaginate = require('mongoose-paginate');
 const informSchema = new Schema({
-    inform_id:Number,//该举报的唯一标识
-    customer_id:Number,//举报用户的id
+    inform_id:String,//该举报的唯一标识
+    customer_id:String,//举报用户的id
     customer_name:String,//举报用户的名字
     inform_content:String,//举报的文字内容
     inform_state:String,//举报的状态，0新建，1已回复

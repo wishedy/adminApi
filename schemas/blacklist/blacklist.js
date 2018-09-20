@@ -3,8 +3,8 @@ const mongoose  = require('mongoose');
 const Schema = mongoose.Schema;
 const mongoosePaginate = require('mongoose-paginate');
 const blackSchema = new Schema({
-    black_id:Number,//该拉黑的唯一标识
-    customer_id:Number,//拉黑用户的id
+    black_id:String,//该拉黑的唯一标识
+    customer_id:String,//拉黑用户的id
     customer_name:String,//拉黑用户的名字
     black_reason:String,//拉黑的原因0营销诈骗、1淫秽色情、2不友善行为、3诱导欺骗、4虚假资料
     relate_customer_id:String,//举报该用户致使拉黑的用户id

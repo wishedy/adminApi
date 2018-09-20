@@ -3,7 +3,7 @@ const mongoose  = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate');
 const Schema = mongoose.Schema;
 const resourceSchema = new Schema({
-    resource_id:Number,//该资源的唯一标识
+    resource_id:String,//该资源的唯一标识
     resource_content:String,//资源的文字内容
     resource_link:String,//资源相关链接
     dynamic_id_list:String,//资源相关动态

@@ -18,13 +18,13 @@ class Customer{
         let pageSize = paramJson.pageSize;
         let pageIndex = paramJson.pageIndex;
         let getJsonType = paramJson.getType;
-        console.log('操作');
+        //console.log('操作');
         delete paramJson.pageSize;
         delete paramJson.pageIndex;
         delete paramJson.getType;
-        console.log(pageSize,pageIndex,paramJson);
+        //console.log(pageSize,pageIndex,paramJson);
         let sendData = {};
-        console.log(paramJson);
+        //console.log(paramJson);
         if(common.isEmptyObject(paramJson)||common.isNothing(paramJson)){
            //传入的是空对象或者没有传值
              sendData = responseData.createResponseData({
@@ -37,7 +37,7 @@ class Customer{
         }else{
             const searchJson = JSON.parse(common.toLine(JSON.stringify(paramJson)));
             common.deleteEmptyProperty(searchJson);
-            console.log(searchJson,pageIndex,pageSize);
+            //console.log(searchJson,pageIndex,pageSize);
             let ModelData = null;
             switch (parseInt(getJsonType,10)){
                 case 0:
@@ -66,7 +66,7 @@ class Customer{
                      });
                 }else{
                     if(data.docs){
-                        console.log(data.total);
+                        //console.log(data.total);
                         sendData = responseData.createResponseData({
                             message:'获取列表成功',
                             data:JSON.parse(common.toHump(JSON.stringify(data.docs))),
@@ -92,6 +92,7 @@ class Customer{
         let t = this;
         let paramJson =  JSON.parse(req.body.paramJson);
         let sendData = {};
+        console.log(paramJson);
         if(common.isEmptyObject(paramJson)||common.isNothing(paramJson)){
             //传入的是空对象或者没有传值
             sendData = responseData.createResponseData({
@@ -115,10 +116,12 @@ class Customer{
                     });
                     res.send(sendData);
                 }else{
+                    console.log(data);
                     if(data){
                         let updateState = paramJson.updateState;
                         let dateStr = dtime().format('YYYY-MM-DD HH:mm:ss');
-                        CustomerModel.update({'customer_id':customerId},{customer_account_status: updateState,'update_time':dateStr}, {multi: false}, function(error, docs){
+                        CustomerModel.update({'customer_id':customerId},{$set:{customer_account_status: updateState,'update_time':dateStr}}, function(error, docs){
+                            console.log(error,docs);
                             if(error){
                                 sendData = responseData.createResponseData({
                                     message:'更新状态失败',
@@ -144,7 +147,7 @@ class Customer{
                                         case 0:
                                             returnDes = '用户已激活';
                                             let blackId = paramJson.blackId;
-                                            BlacklistModel.update({'black_id':blackId},{'unlock_admin_id':adminId,'unlock_admin_name':adminName,'black_state':1,'update_time':dateStr},{multi: false},function(err,data){
+                                            BlacklistModel.update({'black_id':blackId},{$set:{'unlock_admin_id':adminId,'unlock_admin_name':adminName,'black_state':1,'update_time':dateStr}},function(err,data){
                                                 if(err){
                                                     sendResponseData('NO DATA','激活失败');
                                                 }else{
@@ -160,7 +163,7 @@ class Customer{
                                         case 3:
                                             let auditId = paramJson.auditId;
                                             returnDes = '认证已驳回';
-                                            AuditModel.update({'audit_id':auditId},{'audit_result':0,'audit_type':1,'admin_name':adminName,'admin_id':adminId,'update_time':dateStr},{multi: false},function(err,data){
+                                            AuditModel.update({'audit_id':auditId},{$set:{'audit_result':0,'audit_type':1,'admin_name':adminName,'admin_id':adminId,'update_time':dateStr}},function(err,data){
                                                 if(err){
                                                     sendResponseData('NO DATA','更改状态失败');
                                                 }else{
@@ -180,7 +183,7 @@ class Customer{
                                             let blackJson = {
                                                 black_id:timestamp,//该拉黑的唯一标识
                                                 customer_id:customerId,//拉黑用户的id
-                                                customer_name:docs.customer_name,//拉黑用户的名字
+                                                customer_name:data.customer_name,//拉黑用户的名字
                                                 black_reason:reason,//拉黑的原因
                                                 relate_customer_id:relateCustomerId,//举报该用户致使拉黑的用户id
                                                 relate_customer_name:relateCustomerName,//举报该用户致使拉黑的用户名字
@@ -196,7 +199,7 @@ class Customer{
                                                     sendResponseData('NO DATA','拉黑失败');
                                                 }else{
                                                     if(info){
-                                                        sendResponseData(JSON.parse(JSON.stringify(info)),returnDes);
+                                                        sendResponseData(JSON.parse(common.toHump(JSON.stringify(info))),returnDes);
                                                     }else{
                                                         sendResponseData('NO DATA','拉黑失败');
                                                     }
@@ -222,6 +225,7 @@ class Customer{
                             code:2,
                             responsePk:0
                         });
+                        res.send(sendData);
                     }
                 }
             });
@@ -257,7 +261,7 @@ class Customer{
                 }else{
                     if(data){
                         let dateStr = dtime().format('YYYY-MM-DD HH:mm:ss');
-                        InformModel.update({'inform_id':inform_id},{'inform_admin_name':inform_admin_name,'inform_admin_content':inform_admin_content,'inform_admin_id':inform_admin_id,'update_time':dateStr},function(err,info){
+                        InformModel.update({'inform_id':inform_id},{$set:{'inform_admin_name':inform_admin_name,'inform_admin_content':inform_admin_content,'inform_admin_id':inform_admin_id,'update_time':dateStr}},function(err,info){
                             if(err){
                                 sendData = responseData.createResponseData({
                                     message:'回复举报失败',
