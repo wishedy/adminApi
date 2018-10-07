@@ -12,4 +12,5 @@ router.post('/replyToReport',Customer.replyToReport);
 router.post('/activate',Customer.changeCustomerState);
 router.post('/rejectAudit',Customer.changeCustomerState);
 router.get('/getBlacklist',Customer.getJsonList);
+router.get('/getAttachmentList',Customer.getJsonList);
 export default router;

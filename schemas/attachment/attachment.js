@@ -9,6 +9,7 @@ const attachmentSchema = new Schema({
     is_valid:String,//附件目前的状态，0无效,1有效
     customer_id:String,//该附件所属的用户
     create_time:String,//管理员身份证号
+    update_time:String,
     attachment_number:String,//附件相关的号码
     attachment_remark: String//附件备注信息
 });

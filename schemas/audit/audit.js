@@ -16,7 +16,12 @@ const auditSchema = new Schema({
     audit_result:String,//审核结果0驳回，1通过
     customer_id:String,//审核的用户
     customer_name:String,//审核的姓名
-    update_time: String//最新更新的时间
+    update_time: String,//最新更新的时间
+    'customer_profession':String,
+    'customer_degree':String,
+    'customer_location': String,
+    'customer_birthday':String,
+    'customer_sex':String,
 });
 auditSchema.plugin(mongoosePaginate);
 const Audit = mongoose.model('Audit',auditSchema);

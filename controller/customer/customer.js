@@ -5,6 +5,7 @@ import AuditModel from '../../schemas/audit/audit.js';
 import FeedbackModel from '../../schemas/feedback/feedback.js';
 import InformModel from '../../schemas/inform/inform.js';
 import BlacklistModel from '../../schemas/blacklist/blacklist.js';
+import AttachmentModel from '../../schemas/attachment/attachment.js';
 const dtime = require('time-formater');
 class Customer{
     constructor(){
