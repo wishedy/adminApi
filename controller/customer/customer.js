@@ -10,6 +10,8 @@ const dtime = require('time-formater');
 class Customer{
     constructor(){
         this.getJsonList = this.getJsonList.bind(this);
+        this.replyToReport = this.replyToReport.bind(this);
+        this.reportCustomer = this.reportCustomer.bind(this);
         this.changeCustomerState = this.changeCustomerState.bind(this);
     }
     async getJsonList(req,res,next){

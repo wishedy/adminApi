@@ -6,6 +6,7 @@ import Blacklist from '../controller/fabricationVirtualData/blacklist/blacklist.
 import Attachment from '../controller/fabricationVirtualData/attachment/attachment.js';
 import Audit from '../controller/fabricationVirtualData/audit/audit.js';
 import Inform from '../controller/fabricationVirtualData/inform/inform.js';
+import Dynamic from '../controller/fabricationVirtualData/dynamic/dynamic.js';
 const router = express.Router();
 router.get('/customer',Customer.createCustomer);
 router.get('/feedBack',Feedback.createFeedback);
@@ -13,4 +14,5 @@ router.get('/blacklist',Blacklist.createBlackCustomer);
 router.get('/attachment',Attachment.createBlackCustomer);
 router.get('/audit',Audit.createBlackCustomer);
 router.get('/inform',Inform.createInform);
+router.get('/dynamic',Dynamic.createBlackCustomer);
 export default router;
