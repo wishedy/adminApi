@@ -7,6 +7,8 @@ import Attachment from '../controller/fabricationVirtualData/attachment/attachme
 import Audit from '../controller/fabricationVirtualData/audit/audit.js';
 import Inform from '../controller/fabricationVirtualData/inform/inform.js';
 import Dynamic from '../controller/fabricationVirtualData/dynamic/dynamic.js';
+import Topic from '../controller/fabricationVirtualData/topic/topic.js';
+import Recommend from '../controller/fabricationVirtualData/recommend/recommend.js';
 const router = express.Router();
 router.get('/customer',Customer.createCustomer);
 router.get('/feedBack',Feedback.createFeedback);
@@ -15,4 +17,6 @@ router.get('/attachment',Attachment.createBlackCustomer);
 router.get('/audit',Audit.createBlackCustomer);
 router.get('/inform',Inform.createInform);
 router.get('/dynamic',Dynamic.createBlackCustomer);
+router.get('/topic',Topic.createCustomer);
+router.get('/recommend',Recommend.createInform);
 export default router;

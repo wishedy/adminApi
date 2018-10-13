@@ -1,8 +1,8 @@
 import common from '../../utils/common';
 import responseData from '../../utils/responseData';
-import DynamicModel from '../../schemas/dynamic/dynamic.js';
+import TopicModel from '../../schemas/topic/topic.js';
 const dtime = require('time-formater');
-class Dynamic{
+class Topic{
     constructor(){
         this.getJsonList = this.getJsonList.bind(this);
     }
@@ -31,7 +31,7 @@ class Dynamic{
             const searchJson = JSON.parse(common.toLine(JSON.stringify(paramJson)));
             common.deleteEmptyProperty(searchJson);
             //console.log(searchJson,pageIndex,pageSize);
-            let ModelData = DynamicModel;
+            let ModelData = TopicModel;
             ModelData.paginate((searchJson), { page: parseInt(pageIndex), limit: parseInt(pageSize) }, function(error,data){
                 if(error){
                     sendData = responseData.createResponseData({
@@ -65,11 +65,10 @@ class Dynamic{
             });
         }
     }
-    async changeDynamicState(req,res,next){
+    async changeTopicState(req,res,next){
         let t = this;
         let paramJson =  JSON.parse(req.body.paramJson);
         let sendData = {};
-        console.log(paramJson);
         if(common.isEmptyObject(paramJson)||common.isNothing(paramJson)){
             //传入的是空对象或者没有传值
             sendData = responseData.createResponseData({
@@ -80,11 +79,11 @@ class Dynamic{
             });
             res.send(sendData);
         }else{
-            let dynamicId = paramJson.dynamicId;
-            DynamicModel.findOne({'dynamic_id':dynamicId},function(error,data){
+            let TopicId = paramJson.topicId;
+            TopicModel.findOne({'topic_id':TopicId},function(error,data){
                 if(error){
                     sendData = responseData.createResponseData({
-                        message:'查询动态失败',
+                        message:'查询话题失败',
                         data:'NO DATA',
                         code:1,
                         responsePk:0
@@ -95,14 +94,14 @@ class Dynamic{
                     if(data){
                         let updateState = paramJson.updateState;
                         let dateStr = dtime().format('YYYY-MM-DD HH:mm:ss');
-                        DynamicModel.update({'dynamic_id':dynamicId},{$set:{is_valid: updateState,'update_time':dateStr}}, function(error, docs){
+                        TopicModel.update({'topic_id':TopicId},{$set:{is_valid: updateState,'update_time':dateStr}}, function(error, docs){
                             console.log(error,docs);
                             if(error){
                                 sendData = responseData.createResponseData({
                                     message:'更新状态失败',
                                     data:'NO DATA',
                                     code:2,
-                                    responsePk:dynamicId
+                                    responsePk:TopicId
                                 });
                                 res.send(sendData);
                             }else{
@@ -112,16 +111,16 @@ class Dynamic{
                                             message:des,
                                             data:resData,
                                             code:3,
-                                            responsePk:dynamicId
+                                            responsePk:TopicId
                                         });
                                         res.send(sendData);
                                     };
                                     switch (parseInt(updateState,10)){
                                         case 1:
-                                            sendResponseData(docs,'动态已激活');
+                                            sendResponseData(docs,'话题已激活');
                                             break;
                                         case 0:
-                                            sendResponseData(docs,'动态已无效');
+                                            sendResponseData(docs,'话题已无效');
                                             break;
                                     }
                                 }else{
@@ -129,7 +128,7 @@ class Dynamic{
                                         message:'更新状态失败',
                                         data:'NO DATA',
                                         code:2,
-                                        responsePk:dynamicId
+                                        responsePk:TopicId
                                     });
                                     res.send(sendData);
                                 }
@@ -137,7 +136,89 @@ class Dynamic{
                         })
                     }else{
                         sendData = responseData.createResponseData({
-                            message:'该动态不存在',
+                            message:'该话题不存在',
+                            data:'NO DATA',
+                            code:2,
+                            responsePk:0
+                        });
+                        res.send(sendData);
+                    }
+                }
+            });
+        }
+    }
+    async changeTopicStatus(req,res,next){
+        let t = this;
+        let paramJson =  JSON.parse(req.body.paramJson);
+        let sendData = {};
+        if(common.isEmptyObject(paramJson)||common.isNothing(paramJson)){
+            //传入的是空对象或者没有传值
+            sendData = responseData.createResponseData({
+                message:'参数有误',
+                data:'NO DATA',
+                code:0,
+                responsePk:0
+            });
+            res.send(sendData);
+        }else{
+            let TopicId = paramJson.topicId;
+            TopicModel.findOne({'topic_id':TopicId},function(error,data){
+                if(error){
+                    sendData = responseData.createResponseData({
+                        message:'查询话题失败',
+                        data:'NO DATA',
+                        code:1,
+                        responsePk:0
+                    });
+                    res.send(sendData);
+                }else{
+                    console.log(data);
+                    if(data){
+                        let updateState = paramJson.updateState;
+                        let dateStr = dtime().format('YYYY-MM-DD HH:mm:ss');
+                        TopicModel.update({'topic_id':TopicId},{$set:{topic_status: updateState,'update_time':dateStr}}, function(error, docs){
+                            console.log(error,docs);
+                            if(error){
+                                sendData = responseData.createResponseData({
+                                    message:'更新状态失败',
+                                    data:'NO DATA',
+                                    code:2,
+                                    responsePk:TopicId
+                                });
+                                res.send(sendData);
+                            }else{
+                                if(docs){
+                                    let sendResponseData =(resData,des)=>{
+                                        sendData = responseData.createResponseData({
+                                            message:des,
+                                            data:resData,
+                                            code:3,
+                                            responsePk:TopicId
+                                        });
+                                        res.send(sendData);
+                                    };
+                                    switch (parseInt(updateState,10)){
+                                        case 2:
+                                            sendResponseData(docs,'话题已审核通过');
+                                            break;
+                                        case 1:
+                                            sendResponseData(docs,'话题已驳回');
+                                            break;
+                                    }
+                                }else{
+                                    sendData = responseData.createResponseData({
+                                        message:'更新状态失败',
+                                        data:'NO DATA',
+                                        code:2,
+                                        responsePk:TopicId
+                                    });
+                                    res.send(sendData);
+                                }
+                            }
+                        })
+                    }else{
+                        sendData = responseData.createResponseData({
+                            message:'该话题不存在',
                             data:'NO DATA',
                             code:2,
                             responsePk:0
@@ -150,4 +231,4 @@ class Dynamic{
     }
 
 }
-export default  new Dynamic();
+export default  new Topic();

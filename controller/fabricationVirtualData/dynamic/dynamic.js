@@ -13,6 +13,7 @@ class Dynamic{
                     'dynamic_type|1':['0','1','2'],//0脱单动态，1话题动态，2普通动态
                     create_time:'@datetime()',//创建动态的时间
                     customer_id:'@datetime(T)',//该动态的作者id,
+                    customer_name:'@cname',//该动态的作者name,
                     dynamic_relate_id:'@datetime(T)',//动态的对象资源id
                     'like_num|100-9999':1,//该动态的点赞量
                     'is_valid|1':['0','1'],//，0无效,1有效

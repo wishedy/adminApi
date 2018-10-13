@@ -8,6 +8,7 @@ const dynamicSchema = new Schema({
     dynamic_type:String,//0脱单动态，1话题动态，2普通动态
     create_time:String,//创建动态的时间
     customer_id:String,//该动态的作者id,
+    customer_name:String,//该动态的作者姓名,
     dynamic_relate_id:String,//动态的对象资源id
     like_num:String,//该动态的点赞量
     'is_valid':String,//，0无效,1有效

@@ -1,0 +1,10 @@
+'use strict';
+const express = require('express');
+import Topic from '../controller/topic/topic.js';
+const router = express.Router();
+router.get('/getTopicList',Topic.getJsonList);
+router.post('/active',Topic.changeTopicState);
+router.post('/verifyActive',Topic.changeTopicStatus);
+router.post('/invalid',Topic.changeTopicState);
+router.post('/verifyInvalid',Topic.changeTopicStatus);
+export default router;
