@@ -1,7 +1,7 @@
 'use strict';
 import common from '../../utils/common';
 import responseData from '../../utils/responseData';
-const dtime = require('time-formater');
+require('date-utils');
 const crypto  = require('crypto');
 import AdminModel from '../../schemas/admin/admin.js';
 class Admin {
@@ -52,8 +52,9 @@ class Admin {
                         let phoneNum = paramJson.registerPhoneNum;
 
                         let passWord = paramJson.registerPassWord;
-                        var timestamp = (new Date()).getTime();
-                        var datestr = dtime().format('YYYY-MM-DD HH:mm:ss');
+                        let timestamp = (new Date()).getTime();
+                        let dt = new Date();
+                        let datestr = dt.toFormat("YYYY-MM-DD HH24:MI:SS");
                         let encryptPassword = t.encryption(passWord);
                         const newAdmin = {
                             admin_id:timestamp,

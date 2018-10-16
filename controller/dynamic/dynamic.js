@@ -1,7 +1,7 @@
 import common from '../../utils/common';
 import responseData from '../../utils/responseData';
 import DynamicModel from '../../schemas/dynamic/dynamic.js';
-const dtime = require('time-formater');
+require('date-utils');
 class Dynamic{
     constructor(){
         this.getJsonList = this.getJsonList.bind(this);
@@ -94,7 +94,8 @@ class Dynamic{
                     console.log(data);
                     if(data){
                         let updateState = paramJson.updateState;
-                        let dateStr = dtime().format('YYYY-MM-DD HH:mm:ss');
+                        let dt = new Date();
+                        let dateStr = dt.toFormat("YYYY-MM-DD HH24:MI:SS");
                         DynamicModel.update({'dynamic_id':dynamicId},{$set:{is_valid: updateState,'update_time':dateStr}}, function(error, docs){
                             console.log(error,docs);
                             if(error){

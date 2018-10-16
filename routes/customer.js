@@ -4,6 +4,7 @@ import Customer from '../controller/customer/customer.js';
 const router = express.Router();
 router.get('/getCustomerList',Customer.getJsonList);
 router.get('/getAuditList',Customer.getJsonList);
+router.post('/getAuditAttachmentList',Customer.getAttachmentList);
 router.get('/getFeedBackList',Customer.getJsonList);
 router.get('/getInformList',Customer.getJsonList);
 router.post('/blackening',Customer.changeCustomerState);

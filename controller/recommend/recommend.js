@@ -1,7 +1,7 @@
 import common from '../../utils/common';
 import responseData from '../../utils/responseData';
 import RecommendModel from '../../schemas/recommend/recommend.js';
-const dtime = require('time-formater');
+require('date-utils');
 class Recommend{
     constructor(){
         this.getJsonList = this.getJsonList.bind(this);
@@ -93,7 +93,8 @@ class Recommend{
                     console.log(data);
                     if(data){
                         let updateState = paramJson.updateState;
-                        let dateStr = dtime().format('YYYY-MM-DD HH:mm:ss');
+                        let dt = new Date();
+                        let dateStr = dt.toFormat("YYYY-MM-DD HH24:MI:SS");
                         RecommendModel.update({'recommend_id':RecommendId},{$set:{is_valid: updateState,'update_time':dateStr}}, function(error, docs){
                             console.log(error,docs);
                             if(error){
@@ -174,7 +175,8 @@ class Recommend{
                 }else{
                     console.log(data);
                     if(data){
-                        let dateStr = dtime().format('YYYY-MM-DD HH:mm:ss');
+                        let dt = new Date();
+                        let dateStr = dt.toFormat("YYYY-MM-DD HH24:MI:SS");
                         common.deleteEmptyProperty(paramJson);
                         const updateJson = JSON.parse(common.toLine(JSON.stringify(paramJson)));
                         RecommendModel.update({'recommend_id':RecommendId},{$set:updateJson}, function(error, docs){

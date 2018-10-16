@@ -1,7 +1,7 @@
 import common from '../../utils/common';
 import responseData from '../../utils/responseData';
 import ArticleModel from '../../schemas/article/article.js';
-const dtime = require('time-formater');
+require('date-utils');
 class Article{
     constructor(){
         this.getJsonList = this.getJsonList.bind(this);
@@ -93,7 +93,8 @@ class Article{
                     console.log(data);
                     if(data){
                         let updateState = paramJson.updateState;
-                        let dateStr = dtime().format('YYYY-MM-DD HH:mm:ss');
+                        let dt = new Date();
+                        let dateStr = dt.toFormat("YYYY-MM-DD HH24:MI:SS");
                         ArticleModel.update({'article_id':ArticleId},{$set:{is_valid: updateState,'update_time':dateStr}}, function(error, docs){
                             console.log(error,docs);
                             if(error){

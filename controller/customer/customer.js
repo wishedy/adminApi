@@ -1,22 +1,80 @@
 import common from '../../utils/common';
 import responseData from '../../utils/responseData';
 import CustomerModel from '../../schemas/customer/customer.js';
+import AttachmentModel from '../../schemas/attachment/attachment.js';
 import AuditModel from '../../schemas/audit/audit.js';
 import FeedbackModel from '../../schemas/feedback/feedback.js';
 import InformModel from '../../schemas/inform/inform.js';
 import BlacklistModel from '../../schemas/blacklist/blacklist.js';
-import AttachmentModel from '../../schemas/attachment/attachment.js';
-const dtime = require('time-formater');
+require('date-utils');
 class Customer{
     constructor(){
         this.getJsonList = this.getJsonList.bind(this);
         this.replyToReport = this.replyToReport.bind(this);
         this.reportCustomer = this.reportCustomer.bind(this);
         this.changeCustomerState = this.changeCustomerState.bind(this);
+        this.getAttachmentList = this.getAttachmentList.bind(this);
+    }
+    async getAttachmentList(req,res,next){
+        let t = this;
+        let paramJson =  JSON.parse(req.body.paramJson);
+        let sendData = {};
+        console.log(paramJson);
+        if(common.isEmptyObject(paramJson)||common.isNothing(paramJson)){
+            //传入的是空对象或者没有传值
+            console.log('这里');
+            sendData = responseData.createResponseData({
+                message:'参数有误',
+                data:'NO DATA',
+                code:0,
+                responsePk:0
+            });
+            res.send(sendData);
+        }else{
+            let attachmentList = JSON.parse(paramJson.attachmentList);
+            let customerId = paramJson.customerId;
+            let isValid = paramJson.isValid;
+            if(attachmentList.length){
+                AttachmentModel.find({"attachment_id":{"$in":attachmentList},"customer_id":customerId,"is_valid":isValid},function(error,data){
+                    if(error){
+                        sendData = responseData.createResponseData({
+                            message:'获取列表失败',
+                            data:'NO DATA',
+                            code:1,
+                            responsePk:0
+                        });
+                    }else{
+                        if(data){
+                            sendData = responseData.createResponseData({
+                                message:'获取列表成功',
+                                data:JSON.parse(common.toHump(JSON.stringify(data))),
+                                code:1,
+                                responsePk:0
+                            });
+                        }else{
+                            sendData = responseData.createResponseData({
+                                message:'获取列表失败',
+                                data:'NO DATA',
+                                code:1,
+                                responsePk:0
+                            });
+                        }
+                    }
+                    res.send(sendData);
+                });
+            }else{
+                sendData = responseData.createResponseData({
+                    message:'参数有误',
+                    data:'NO DATA',
+                    code:0,
+                    responsePk:0
+                });
+                res.send(sendData);
+            }
+        }
     }
     async getJsonList(req,res,next){
         let t = this;
-
         let paramJson =  req.query;
         let pageSize = paramJson.pageSize;
         let pageIndex = paramJson.pageIndex;
@@ -122,7 +180,8 @@ class Customer{
                     console.log(data);
                     if(data){
                         let updateState = paramJson.updateState;
-                        let dateStr = dtime().format('YYYY-MM-DD HH:mm:ss');
+                        let dt = new Date();
+                        let dateStr = dt.toFormat("YYYY-MM-DD HH24:MI:SS");
                         CustomerModel.update({'customer_id':customerId},{$set:{customer_account_status: updateState,'update_time':dateStr}}, function(error, docs){
                             console.log(error,docs);
                             if(error){
@@ -263,7 +322,8 @@ class Customer{
                     res.send(sendData);
                 }else{
                     if(data){
-                        let dateStr = dtime().format('YYYY-MM-DD HH:mm:ss');
+                        let dt = new Date();
+                        let dateStr = dt.toFormat("YYYY-MM-DD HH24:MI:SS");
                         InformModel.update({'inform_id':inform_id},{$set:{'inform_admin_name':inform_admin_name,'inform_admin_content':inform_admin_content,'inform_admin_id':inform_admin_id,'update_time':dateStr}},function(err,info){
                             if(err){
                                 sendData = responseData.createResponseData({
@@ -335,7 +395,8 @@ class Customer{
                 res.send(sendData);
             }else{
                 let timestamp = (new Date()).getTime();
-                let dateStr = dtime().format('YYYY-MM-DD HH:mm:ss');
+                let dt = new Date();
+                let dateStr = dt.toFormat("YYYY-MM-DD HH24:MI:SS");
                 CustomerModel.findOne({'customer_name':inform_customer_name,'customer_nickname':inform_customer_nickname},function(error,data){
                     if(error){
                         sendData = responseData.createResponseData({

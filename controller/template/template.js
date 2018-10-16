@@ -1,7 +1,7 @@
 import common from '../../utils/common';
 import responseData from '../../utils/responseData';
 import TemplateModel from '../../schemas/template/template.js';
-const dtime = require('time-formater');
+require('date-utils');
 class Template{
     constructor(){
         this.getJsonList = this.getJsonList.bind(this);
@@ -93,7 +93,8 @@ class Template{
                     console.log(data);
                     if(data){
                         let updateState = paramJson.updateState;
-                        let dateStr = dtime().format('YYYY-MM-DD HH:mm:ss');
+                        let dt = new Date();
+                        let dateStr = dt.toFormat("YYYY-MM-DD HH24:MI:SS");
                         TemplateModel.update({'template_id':TemplateId},{$set:{is_valid: updateState,'update_time':dateStr}}, function(error, docs){
                             console.log(error,docs);
                             if(error){
