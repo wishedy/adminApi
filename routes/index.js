@@ -8,6 +8,7 @@ import Recommend from './recommend.js';
 import Article from './article.js';
 import CreateArticle from './createArticle.js';
 import Template from './template.js';
+import message from './message.js';
 export default app=>{
     app.use('/call/admin',admin);
     app.use('/call/createVirtualData',createData);
@@ -18,4 +19,5 @@ export default app=>{
     app.use('/call/article',Article);
     app.use('/call/createArticle',CreateArticle);
     app.use('/call/template',Template);
+    app.use('/call/message',message);
 }
