@@ -9,6 +9,7 @@ import Article from './article.js';
 import CreateArticle from './createArticle.js';
 import Template from './template.js';
 import message from './message.js';
+import scene from './scene.js';
 export default app=>{
     app.use('/call/admin',admin);
     app.use('/call/createVirtualData',createData);
@@ -20,4 +21,5 @@ export default app=>{
     app.use('/call/createArticle',CreateArticle);
     app.use('/call/template',Template);
     app.use('/call/message',message);
+    app.use('/call/scene',scene);
 }

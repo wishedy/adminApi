@@ -2,13 +2,16 @@
 const express = require('express');
 import Message from '../controller/message/message.js';
 const router = express.Router();
-router.get('/messages',Message.getList);
-router.put('/activate',Message.activate);
-router.put('/inactive',Message.inactive);
+/* 前端接口 */
+// router.get('/follow',Message.getFollowers);
+// router.post('/follow',Message.follow);
+// router.post('/unfollow',Message.unfollow);
+// router.get('/comments',Message.getComments);
+// router.post('/comments',Message.addComment);
+// router.put('/comments',Message.updateComment);
+// router.delete('/comments',Message.deleteComment);
 
-router.get('/sceneMessages',Message.getSceneList);
-router.post('/sceneMessages',Message.createSceneMessage);
-router.put('/sceneMessages',Message.updateSceneMessage);
-router.put('/sceneMessagesActivate',Message.activateScene);
-router.put('/sceneMessagesInactive',Message.inactiveScene);
+/* 管理平台接口 */
+router.get('/messages',Message.getList);
+router.put('/messages',Message.updateMessage);
 export default router;
