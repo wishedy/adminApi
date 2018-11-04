@@ -25,6 +25,9 @@ app.use(bodyParser.json());
 app.get('/',function(req,res,next){
    res.send('api根目录');
 });
+
+mongoose.Promise = Promise;
+
 mongoose.connect('mongodb://localhost:27017/loveManagement',{useMongoClient:true},function(err){
     if(err){
         console.log('数据库连接失败');

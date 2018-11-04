@@ -1,10 +1,12 @@
 import responseData from '../../utils/responseData';
-import MessageModel from '../../schemas/message/message';
+import TopicModel from '../../schemas/cms/topic';
+const uuid = require('node-uuid');
 
-class Message{
+class Topic{
   constructor(){
     this.getList = this.getList.bind(this);
     this.getSingle = this.getSingle.bind(this);
+    this.create = this.create.bind(this);
     this.update = this.update.bind(this);
   }
   async getList(req,res,next){
@@ -13,7 +15,7 @@ class Message{
     delete query.pageSize;
     delete query.pageIndex;
     let sendData = {};
-    MessageModel.paginate(query, {
+    TopicModel.paginate(query, {
       page: parseInt(pageIndex) || 1,
       limit: parseInt(pageSize) || 10
     }, function(error,data) {
@@ -40,7 +42,7 @@ class Message{
   async getSingle(req,res,next){
     const query =  req.query;
     let sendData = {};
-    MessageModel.findOne(query, function(error,data) {
+    TopicModel.findOne(query, function(error,data) {
       if(error){
         sendData = responseData.createResponseData({
           message: '获取列用户失败',
@@ -60,11 +62,35 @@ class Message{
       next();
     });
   }
+  async create(req, res, next) {
+    let { data } = req.body;
+    let sendData = {};
+    data = Object.assign({}, data, {topic_id: uuid.v4(), is_valid: true, create_time: new Date(), update_time: new Date()});
+    TopicModel.create(data, (error, data) => {
+      if (error) {
+        sendData = {
+          message:'添加失败',
+          data: '',
+          code: 1,
+          responsePk: 0
+        };
+      } else {
+        sendData = {
+          message:'添加成功',
+          data: data,
+          code: 0,
+          responsePk: (new Date()).getTime()
+        };
+      }
+      res.send(sendData);
+      next();
+    });
+  }
   async update(req,res,next){
-    const {message_id, data} =  req.body;
+    const {topic_id, data} =  req.body;
     data.update_time = new Date();
     let sendData = {};
-    MessageModel.update({message_id}, {$set: data}, function(error, data){
+    TopicModel.update({topic_id}, {$set: data}, function(error, data){
       if(error){
         sendData = responseData.createResponseData({
           message:'更新信息失败',
@@ -85,4 +111,4 @@ class Message{
     });
   }
 }
-export default new Message();
+export default new Topic();

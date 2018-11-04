@@ -1,25 +1,48 @@
 'use strict';
-import admin from './admin.js';
-import createData from './createData.js';
-import customer from './customer.js';
-import dynamic from './dynamic.js';
-import topic from './topic.js';
-import Recommend from './recommend.js';
-import Article from './article.js';
-import CreateArticle from './createArticle.js';
-import Template from './template.js';
-import message from './message.js';
-import scene from './scene.js';
+import admin from './system/admin.js';
+import scene from './system/auth/scene';
+
+import comment from './cms/comment/comment';
+import article from './cms/article';
+import dynamic from './cms/dynamic.js';
+import recommend from './cms/recommend.js';
+import topic from './cms/topic.js';
+
+import message from './message/message';
+import messageScene from './message/messageScene.js';
+
+import attachment from './user/common/attachment';
+import family from './user/common/family';
+import interest from './user/common/interest';
+import audit from './user/audit';
+import blacklist from './user/blacklist';
+import customer from './user/customer';
+import feedback from './user/feedback';
+
+import createData from './other/createData.js';
+import Template from './other/template.js';
+
 export default app=>{
-    app.use('/call/admin',admin);
-    app.use('/call/createVirtualData',createData);
-    app.use('/call/customer',customer);
-    app.use('/call/dynamic',dynamic);
-    app.use('/call/topic',topic);
-    app.use('/call/recommend',Recommend);
-    app.use('/call/article',Article);
-    app.use('/call/createArticle',CreateArticle);
-    app.use('/call/template',Template);
+    app.use('/call/system/admin',admin);
+    app.use('/call/system/auth/scene',scene);
+
+    app.use('/call/cms/common/comment',comment);
+    app.use('/call/cms/article',article);
+    app.use('/call/cms/dynamic',dynamic);
+    app.use('/call/cms/recommend',recommend);
+    app.use('/call/cms/topic',topic);
+
+    app.use('/call/user/common/attachment',attachment);
+    app.use('/call/user/common/family',family);
+    app.use('/call/user/common/interest',interest);
+    app.use('/call/user/audit',audit);
+    app.use('/call/user/blacklist',blacklist);
+    app.use('/call/user/customer',customer);
+    app.use('/call/user/feedback',feedback);
+
     app.use('/call/message',message);
-    app.use('/call/scene',scene);
+    app.use('/call/messageScene',messageScene);
+
+    app.use('/call/createVirtualData',createData);
+    app.use('/call/template',Template);
 }

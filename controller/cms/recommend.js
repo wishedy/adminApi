@@ -1,7 +1,7 @@
 import responseData from '../../utils/responseData';
-import MessageModel from '../../schemas/message/message';
+import RecommendModel from '../../schemas/cms/recommend';
 
-class Message{
+class Recommend{
   constructor(){
     this.getList = this.getList.bind(this);
     this.getSingle = this.getSingle.bind(this);
@@ -13,7 +13,7 @@ class Message{
     delete query.pageSize;
     delete query.pageIndex;
     let sendData = {};
-    MessageModel.paginate(query, {
+    RecommendModel.paginate(query, {
       page: parseInt(pageIndex) || 1,
       limit: parseInt(pageSize) || 10
     }, function(error,data) {
@@ -40,7 +40,7 @@ class Message{
   async getSingle(req,res,next){
     const query =  req.query;
     let sendData = {};
-    MessageModel.findOne(query, function(error,data) {
+    RecommendModel.findOne(query, function(error,data) {
       if(error){
         sendData = responseData.createResponseData({
           message: '获取列用户失败',
@@ -61,10 +61,10 @@ class Message{
     });
   }
   async update(req,res,next){
-    const {message_id, data} =  req.body;
+    const {recommend_id, data} =  req.body;
     data.update_time = new Date();
     let sendData = {};
-    MessageModel.update({message_id}, {$set: data}, function(error, data){
+    RecommendModel.update({recommend_id}, {$set: data}, function(error, data){
       if(error){
         sendData = responseData.createResponseData({
           message:'更新信息失败',
@@ -85,4 +85,4 @@ class Message{
     });
   }
 }
-export default new Message();
+export default new Recommend();

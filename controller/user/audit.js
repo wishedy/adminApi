@@ -1,7 +1,7 @@
 import responseData from '../../utils/responseData';
-import MessageModel from '../../schemas/message/message';
+import AuditModel from '../../schemas/user/audit.js';
 
-class Message{
+class Audit{
   constructor(){
     this.getList = this.getList.bind(this);
     this.getSingle = this.getSingle.bind(this);
@@ -13,20 +13,20 @@ class Message{
     delete query.pageSize;
     delete query.pageIndex;
     let sendData = {};
-    MessageModel.paginate(query, {
+    AuditModel.paginate(query, {
       page: parseInt(pageIndex) || 1,
       limit: parseInt(pageSize) || 10
     }, function(error,data) {
       if(error){
         sendData = responseData.createResponseData({
-          message: '获取列表失败',
+          message: '获取列用户表失败',
           data: '',
           code: 1,
           responsePk: 0
         });
       }else{
         sendData = responseData.createResponseData({
-          message: '获取列表成功',
+          message: '获取用户列表成功',
           data: data.docs,
           code: 0,
           count:  data.total,
@@ -34,13 +34,12 @@ class Message{
         });
       }
       res.send(sendData);
-      next();
     });
   }
   async getSingle(req,res,next){
     const query =  req.query;
     let sendData = {};
-    MessageModel.findOne(query, function(error,data) {
+    AuditModel.findOne(query, function(error,data) {
       if(error){
         sendData = responseData.createResponseData({
           message: '获取列用户失败',
@@ -57,32 +56,31 @@ class Message{
         });
       }
       res.send(sendData);
-      next();
     });
   }
   async update(req,res,next){
-    const {message_id, data} =  req.body;
+    const {audit_id, data} =  req.body;
     data.update_time = new Date();
     let sendData = {};
-    MessageModel.update({message_id}, {$set: data}, function(error, data){
+    AuditModel.update({audit_id}, {$set: data}, function(error, data){
       if(error){
         sendData = responseData.createResponseData({
-          message:'更新信息失败',
+          message:'更新用户信息失败',
           data: '',
           code: 1,
           pk: 0
         });
+        res.send(sendData);
       }else{
         sendData = responseData.createResponseData({
-          message:'更新信息成功',
+          message:'更新用户信息成功',
           data: data,
           code: 0,
           pk:(new Date()).getTime()
         });
+        res.send(sendData);
       }
-      res.send(sendData);
-      next();
     });
   }
 }
-export default new Message();
+export default new Audit();
