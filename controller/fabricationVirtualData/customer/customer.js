@@ -48,7 +48,6 @@ import CustomerModel from '../../../schemas/customer/customer.js';
          let sumNum = 0;
          let  saveCustomerData = ()=>{
             for(let i = 0;i<data.dataList.length;i++){
-               // console.log(data.dataList[i]['customer_nickname']);
                 const customer = CustomerModel.findOne({'customer_id':data.dataList[i]['customer_id']},function(error,userInfo){
                    //console.log('执行',error); 
                    if(error){
