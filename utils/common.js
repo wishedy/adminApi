@@ -51,14 +51,51 @@ class common {
         }
     }
     // 下划线转换驼峰
-    toHump(name) {
-        return name.replace(/\_(\w)/g, function(all, letter){
-            return letter.toUpperCase();
-        });
+    toHump(data) {
+        let originalData = JSON.parse(JSON.stringify(data));
+        let resultData = [];
+        for(let num = 0;num<originalData.length;num++){
+            let jsonData = JSON.parse(JSON.stringify(originalData[num]));
+            let resultJson = {};
+            for(let key in jsonData){
+                let newKeyName = key.replace(/\_(\w)/g, function(all, letter){
+                    return letter.toUpperCase();
+                });
+                resultJson[newKeyName] = jsonData[key];
+            }
+            resultData.push(resultJson);
+        }
+        return resultData;
+    }
+    jsonToArr(data){
+        let originalData = JSON.parse(JSON.stringify(data));
+        let  resultData = [];
+        for(let key in originalData){
+            resultData.push(originalData[key]);
+        }
+        return resultData;
     }
     // 驼峰转换下划线
-    toLine(name) {
-        return name.replace(/([A-Z])/g,"_$1").toLowerCase();
+    toLine(data) {
+        let originalData = JSON.parse(JSON.stringify(data));
+        let resultData = {};
+        for(let key in originalData){
+            let newKeyName = key.replace(/([A-Z])/g,"_$1").toLowerCase();
+            resultData[newKeyName] = originalData[key];
+        }
+        return resultData;
+    }
+    duringTime(data){
+        let originalData = JSON.parse(JSON.stringify(data));
+        if(originalData.create_during_time&&originalData.create_during_time.length){
+             originalData['create_time']= { "create_time" : { "$gte" :(originalData.create_during_time[0]).toFormat("YYYY-MM-DD HH24:MI:SS") , "$lt" : (originalData.create_during_time[1]).toFormat("YYYY-MM-DD HH24:MI:SS") } };
+            delete originalData['create_during_time'];
+        }
+        if(originalData.update_during_time&&originalData.update_during_time.length){
+            originalData['update_time']= { "create_time" : { "$gte" :(originalData.update_during_time[0]).toFormat("YYYY-MM-DD HH24:MI:SS") , "$lt" : (originalData.update_during_time[1]).toFormat("YYYY-MM-DD HH24:MI:SS") } };
+            delete originalData['update_during_time'];
+        }
+        return originalData;
     }
 }
 export default new common();

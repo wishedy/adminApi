@@ -8,16 +8,12 @@ class Recommend{
     }
     getJsonList(req,res,next){
         let t = this;
-
         let paramJson =  req.query;
         let pageSize = paramJson.pageSize;
         let pageIndex = paramJson.pageIndex;
-        //console.log('操作');
         delete paramJson.pageSize;
         delete paramJson.pageIndex;
-        //console.log(pageSize,pageIndex,paramJson);
         let sendData = {};
-        //console.log(paramJson);
         if(common.isEmptyObject(paramJson)||common.isNothing(paramJson)){
             //传入的是空对象或者没有传值
             sendData = responseData.createResponseData({
@@ -30,7 +26,6 @@ class Recommend{
         }else{
             const searchJson = JSON.parse(common.toLine(JSON.stringify(paramJson)));
             common.deleteEmptyProperty(searchJson);
-            //console.log(searchJson,pageIndex,pageSize);
             let ModelData = RecommendModel;
             ModelData.paginate((searchJson), { page: parseInt(pageIndex), limit: parseInt(pageSize) }, function(error,data){
                 if(error){
@@ -42,11 +37,9 @@ class Recommend{
                     });
                 }else{
                     if(data.docs){
-                        console.log(data.docs);
-                        //console.log(data.total);
                         sendData = responseData.createResponseData({
                             message:'获取列表成功',
-                            data:JSON.parse(common.toHump(JSON.stringify(data.docs))),
+                            data:common.toHump(data.docs),
                             code:1,
                             count:data.total,
                             responsePk:1
@@ -60,7 +53,6 @@ class Recommend{
                         });
                     }
                 }
-
                 res.send(sendData);
             });
         }
@@ -90,7 +82,6 @@ class Recommend{
                     });
                     res.send(sendData);
                 }else{
-                    console.log(data);
                     if(data){
                         let updateState = paramJson.updateState;
                         let dt = new Date();

@@ -12,7 +12,7 @@ class responseData{
                  "responseMessage":options.message,
                  "responseData":result,
                  "responseCode":options.code,
-                 "responseStatus":true,
+                 "responseStatus":options.status,
                  "responsePk":options.pk
              }
         }
@@ -23,7 +23,7 @@ class responseData{
                  "responseMessage":options.message,
                  "responseData":result,
                  "responseCode":options.code,
-                 "responseStatus":true,
+                 "responseStatus":options.status,
                  "responsePk":options.pk
              }
          }

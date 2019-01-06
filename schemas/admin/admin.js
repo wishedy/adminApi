@@ -9,7 +9,8 @@ const adminSchema = new Schema({
     admin_phone_num:String,//管理员电话号
     admin_identity_num:String,//管理员身份证号
     admin_pass_word:String,//管理员密码
-    admin_register_time: String//管理员注册时间
+    create_time:String,//管理员注册的时间
+    update_time:String//	管理员信息更新的时间
 });
 const Admin = mongoose.model('Admin',adminSchema);
 export default  Admin;

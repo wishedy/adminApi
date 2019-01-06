@@ -1,6 +1,7 @@
 'use strict';
 import common from '../../utils/common';
 import responseData from '../../utils/responseData';
+const nanoid = require('nanoid');
 require('date-utils');
 const crypto  = require('crypto');
 import AdminModel from '../../schemas/admin/admin.js';
@@ -17,10 +18,11 @@ class Admin {
         if(common.isEmptyObject(paramJson)||common.isNothing(paramJson)){
            //传入的是空对象或者没有传值
              sendData = responseData.createResponseData({
-               message:'注册管理员失败',
+               message:'参数有误',
                data:'NO DATA',
                code:0,
-               responsePk:0
+               responsePk:0,
+               status:false
             });
            res.send(sendData);
         }else{
@@ -29,19 +31,21 @@ class Admin {
             const  admin = AdminModel.findOne({'admin_name':name,'admin_identity_num':identityNum},function(error,userInfo){
                 if(error){
                     sendData = responseData.createResponseData({
-                        message:'注册管理员失败',
+                        message:'注册失败',
                         data:'NO DATA',
                         code:0,
-                        pk:0
+                        pk:0,
+                        status:false
                     });
                     res.send(sendData);
                 }else{
                     if(userInfo){
                         sendData = responseData.createResponseData({
-                            message:'该用户已经存在',
+                            message:'用户已经存在',
                             data:'NO DATA',
                             code:1,
-                            pk:userInfo.admin_id
+                            pk:userInfo.admin_id,
+                            status:false
                         });
                         res.send(sendData);
                     }else{
@@ -52,31 +56,33 @@ class Admin {
                         let phoneNum = paramJson.registerPhoneNum;
 
                         let passWord = paramJson.registerPassWord;
-                        let timestamp = (new Date()).getTime();
+                        let adminId = nanoid();
                         let dt = new Date();
                         let datestr = dt.toFormat("YYYY-MM-DD HH24:MI:SS");
                         let encryptPassword = t.encryption(passWord);
                         const newAdmin = {
-                            admin_id:timestamp,
+                            admin_id:adminId,
                             admin_grade:grade,//管理员等级，0超级管理员，1普通管理员
                             admin_name:name,//管理员姓名
                             admin_email:email,//管理员邮箱
                             admin_phone_num:phoneNum,//管理员电话号
                             admin_identity_num:identityNum,//管理员身份证号
                             admin_pass_word:encryptPassword,//管理员密码
-                            admin_register_time: datestr//管理员注册时间
+                            create_time: datestr,//管理员注册时间
+                            update_time: datestr//管理员注册时间
                         };
                         AdminModel.create(newAdmin);
                         req.session.admin_id = admin.id;
                         sendData = responseData.createResponseData({
                             message:'注册成功',
                             data:{
-                                adminId:timestamp,
+                                adminId:adminId,
                                 adminName:name,
                                 registerTime:datestr
                             },
                             code:2,//注册成功
-                            pk:timestamp
+                            pk:adminId,
+                            status:true
                         });
                         res.send(sendData);
                 }
@@ -95,7 +101,8 @@ class Admin {
                 message:'参数有误',
                 data:'NO DATA',
                 code:0,//登录失败
-                pk:0
+                pk:0,
+                status:false
             });
             res.send(sendData);
         }else{
@@ -115,7 +122,8 @@ class Admin {
                                 adminGrade:userInfo.admin_grade
                             },
                             code:2,//登录成功
-                            pk:userInfo.admin_id
+                            pk:userInfo.admin_id,
+                            status:true
                         });
                         res.send(sendData);
                     }else{
@@ -124,7 +132,8 @@ class Admin {
                             message:'账号或密码不正确',
                             data:'NO DATA',
                             code:1,//密码不正确
-                            pk:0
+                            pk:0,
+                            status:false
                         });
                         res.send(sendData);
                     }
@@ -133,7 +142,8 @@ class Admin {
                         message:'账号或密码不正确',
                         data:'NO DATA',
                         code:1,//密码不正确
-                        pk:0
+                        pk:0,
+                        status:false
                     });
                     res.send(sendData);
                 }
