@@ -72,13 +72,13 @@ class column {
                             sendData = responseData.createResponseData({
                                 message:'添加成功',
                                 data:{
-                                    column_id:timestamp,
+                                    columnId:timestamp,
                                     columnTitle:columnTitle,
                                     createTime:datestr
                                 },
                                 code:3,//添加成功
                                 pk:timestamp,
-                                status:false
+                                status:true
                             });
                             res.send(sendData);
                         }else{
