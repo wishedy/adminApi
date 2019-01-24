@@ -1,6 +1,6 @@
 'use strict';
 import admin from './admin.js';
-import createData from './createData.js';
+//import createData from './createData.js';
 import customer from './customer.js';
 import dynamic from './dynamic.js';
 import topic from './topic.js';
@@ -15,7 +15,7 @@ export default app=>{
     app.use('/call/admin',admin);
     app.use('/call/column',column);
     app.use('/call/icon',icon);
-    app.use('/call/createVirtualData',createData);
+    //app.use('/call/createVirtualData',createData);
     app.use('/call/customer',customer);
     app.use('/call/dynamic',dynamic);
     app.use('/call/aside',aside);

@@ -1,11 +1,13 @@
 import common from '../../utils/common';
 import responseData from '../../utils/responseData';
 import columnModel from '../../schemas/column/column.js';
+import adminModel from '../../schemas/admin/admin.js';
 const nanoid = require('nanoid');
 class column {
     constructor() {
         this.createColumn = this.createColumn.bind(this);
         this.getJsonList = this.getJsonList.bind(this);
+        this.checkAdminName = this.checkAdminName.bind(this);
     }
     async  createColumn(req,res,next) {
         let t  = this;
@@ -50,16 +52,17 @@ class column {
 
                         let zIndex = paramJson.columnIndex;
                         let adminId = paramJson.adminId;
-                        let icon_id = paramJson.iconId;
+                        let columnIcon = paramJson.columnIcon;
                         let timestamp = nanoid();
                         let dt = new Date();
                         let datestr = dt.toFormat("YYYY-MM-DD HH24:MI:SS");
-                        let addSideOnOff = parseInt(zIndex,10)===0?columnTitle.length&&icon_id.length&&zIndex.length&&routerModule.length:columnTitle.length&&icon_id.length&&parentSiteId.length&&zIndex.length&&routerModule.length;
+                        let noneParent = columnTitle.length&&columnIcon.length&&zIndex.length&&routerModule.length;
+                        let addSideOnOff = parseInt(zIndex,10)===0?noneParent:noneParent&&parentSiteId.length;
                         if(addSideOnOff){
                             const newAdmin = {
                                 column_id:timestamp,//该侧边栏的唯一标识
                                 column_title:columnTitle,//侧边栏标题
-                                icon_id:icon_id,//侧边栏的iconClass
+                                column_icon:columnIcon,//侧边栏的iconClass
                                 admin_id:adminId,
                                 create_time:datestr,//创建侧边栏的时间
                                 column_index:zIndex,//层级
@@ -72,13 +75,13 @@ class column {
                             sendData = responseData.createResponseData({
                                 message:'添加成功',
                                 data:{
-                                    column_id:timestamp,
+                                    columnId:timestamp,
                                     columnTitle:columnTitle,
                                     createTime:datestr
                                 },
                                 code:3,//添加成功
                                 pk:timestamp,
-                                status:false
+                                status:true
                             });
                             res.send(sendData);
                         }else{
@@ -132,9 +135,10 @@ class column {
                     });
                 }else{
                     if(data.docs){
+                        console.log(t.checkAdminName(common.toHump(common.jsonToArr(data.docs))));
                         sendData = responseData.createResponseData({
                             message:'获取列表成功',
-                            data:common.toHump(common.jsonToArr(data.docs)),
+                            data:t.checkAdminName(common.toHump(common.jsonToArr(data.docs))),
                             code:1,
                             count:data.total,
                             responsePk:0
@@ -152,6 +156,25 @@ class column {
                 res.send(sendData);
             });
         }
+    }
+    checkAdminName(data){
+        let originalList = JSON.parse(JSON.stringify(data));
+        let resultList = [];
+        for(let num = 0;num<originalList.length;num++){
+            let item = originalList[num];
+            adminModel.findOne({ admin_id:item.adminId},function(err, doc){// doc 是单个文档
+                if(err){
+                    item.adminName = '';
+
+                }else{
+                    console.log(doc);
+                    item.adminName = doc.admin_name;
+                }
+                resultList.push(item);
+            });
+        }
+        console.log(resultList);
+        return resultList;
     }
 }
 export default  new column();
